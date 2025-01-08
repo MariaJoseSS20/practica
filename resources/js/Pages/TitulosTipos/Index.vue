@@ -13,22 +13,19 @@ import Column from 'primevue/column';
 import { useI18n } from 'vue-i18n';
 import { InputText } from 'primevue';
 
-function toggleDarkMode() { 
-    document.documentElement.classList.toggle('my-app-dark');
-    isMoon.value = !isMoon.value;
- } 
-
-const isMoon = ref(true);
-
 const { t, locale } = useI18n();
 
 // Estado para el idioma seleccionado
 const selectedLanguage = ref(locale.value);
 
-// Cambiar el idioma
-const changeLanguage = (language) => {
-    locale.value = language; // Cambia el idioma
-    selectedLanguage.value = language; // Actualiza el estado del idioma seleccionado
+const toggleLanguage = () => {
+  if (selectedLanguage.value === 'es') {
+    selectedLanguage.value = 'en'; // Cambiar a inglés
+    locale.value = 'en'; // Actualizar idioma global
+  } else {
+    selectedLanguage.value = 'es'; // Cambiar a español
+    locale.value = 'es'; // Actualizar idioma global
+  }
 };
 
 const toast = useToast();
@@ -212,22 +209,19 @@ const deleteTitulo = (id) => {
 </script>
 
 <template>
-    
-    <Toast position="top-center" />
-        <div class="flex justify-end gap-2">
-            <Button  :icon="isMoon ? 'pi pi-moon' : 'pi pi-sun'"
-            @click="toggleDarkMode" 
-            class="w32 sm:w-auto"
-            ref="darkModeButton"/>
-        </div>
 
-    <div class="language-selector">
-            <label>{{ t('select_language') }}:</label>
-            <select v-model="selectedLanguage" @change="changeLanguage(selectedLanguage)">
-                <option value="es">{{ t('spanish') }}</option>
-                <option value="en">{{ t('english') }}</option>
-            </select>
-        </div>
+<header class="flex justify-end items-center p-4 w-full pr-16">
+    <!-- Icono de la bandera -->
+    <img
+      :src="selectedLanguage === 'es' ? '/images/chile-flag.png' : '/images/us-flag.png'"
+      alt="Idioma"
+      class="w-8 h-6 cursor-pointer"
+      @click="toggleLanguage"
+    />
+</header>
+    
+    <Toast position="top-center"/>
+       
 
     <div v-if="loading" class="flex justify-center items-center p-4">
         <i class="pi pi-spin pi-spinner text-2xl"></i>
@@ -235,14 +229,19 @@ const deleteTitulo = (id) => {
     </div>
 
     <div v-else>
-        <FormSection @submitted="submitForm">
+        <div class="p-4 rounded-md">
+        <FormSection @submitted="submitForm"class="mr-10">
             <template #title>
+                <div class="flex justify-start items-center px-6">
                 {{ t('academic_info') }}
+                </div>
             </template>
 
             <template #description>
+            <div class="flex justify-start items-center px-6 text-sm">
                 {{ t('academic_info_description') }}
-            </template>
+            </div>
+        </template>
 
             <template #form>
                 <div class="col-span-12">
@@ -250,18 +249,21 @@ const deleteTitulo = (id) => {
                                 :value="titulosTipos" 
                                 dataKey="id" 
                                 class="text-sm"
-                                tableStyle="min-width: 40rem; width: 100%; padding: 0;">
+                                tableStyle="min-width: 40rem; width: 100%; padding: 0; ">
                         <template #header>
                             <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-lg font-medium">{{ t('registered_academic_titles') }}</h3>
-                                <Button :label="t('add_academic_title')" icon="pi pi-plus" @click="showForm"
-                                    class="p-button-sm p-button-primary"/>
+                                <h3 class="text-lg font-medium">{{ t('types_of_registered_titles') }}</h3>
+                                <Button 
+                                :label="t('add_title_type')" 
+                                icon="pi pi-plus" 
+                                @click="showForm"
+                                class="p-button-sm p-button-primary"/>
                             </div>
                         </template>
 
                         <template #empty>
                             <div class="text-center p-4">
-                                <p class="mb-2">{{ t('no_academic_records') }}</p>
+                                <p class="mb-2">{{ t('No_title_types_have_been_recorded') }}</p>
                             </div>
                         </template>
 
@@ -278,7 +280,9 @@ const deleteTitulo = (id) => {
                             </template>
                         </Column>
                     </DataTable>
-                </div>
+                
+            </div>
+            
 
                 <Dialog 
                     v-model:visible="visible" 
@@ -321,5 +325,6 @@ const deleteTitulo = (id) => {
                 </Dialog>
             </template>
         </FormSection>
+    </div>
     </div>
 </template> 
