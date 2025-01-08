@@ -30,4 +30,9 @@ export default {
     spanish: 'Español',
     english: 'Inglés',
     academic_info: 'Información Académica',
+
+    confirm_delete: "Confirmar eliminación",
+    delete_confirmation_message: "Are you sure you want to delete this type of title?",
+    confirm: 'Confirmar'
+    
 };
