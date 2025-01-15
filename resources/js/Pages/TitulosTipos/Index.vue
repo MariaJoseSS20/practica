@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import Button from "primevue/button";
 import Toast from 'primevue/toast';
@@ -35,6 +35,7 @@ const selectedTitulo = ref(null);
 
 const tituloForm = useForm({
   nombre: '',
+  errors: {}
 });
 
 const currentData = ref(null);
@@ -81,13 +82,24 @@ onMounted(async () => {
   }
 });
 
+// Agregar un watcher para limpiar el error cuando el campo nombre sea válido
+watch(() => tituloForm.nombre, (newValue) => {
+  if (newValue && /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(newValue)) {
+    // Si el valor es válido, elimina el error
+    delete tituloForm.errors.nombre;
+  }
+});
 const validateForm = () => {
   const errors = [];
+  // Verifica si el nombre está vacío o no tiene el formato correcto
   if (!tituloForm.nombre || tituloForm.nombre.trim() === '') {
-    errors.push(t('field_required', { field: t('title') }));
+    errors.push(t('field_required', { field: t('degree_type') }));
+  } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(tituloForm.nombre)) {
+    errors.push(t('invalid_format')); // Aquí se agrega el error relacionado con el formato
   }
   return errors;
 };
+
 
 const showEditForm = (titulo) => {
   editMode.value = true;
@@ -99,16 +111,21 @@ const showEditForm = (titulo) => {
 const submitForm = () => {
   const errors = validateForm();
   if (errors.length > 0) {
+
+    tituloForm.errors.nombre = errors[0];  
+    
     errors.forEach(error => {
       toast.add({
         severity: 'error',
-        summary: t('validation_error'),
+        summary: t('Mistake'),
         detail: error,
         life: 3000
       });
     });
     return;
   }
+
+  
 
   if (editMode.value) {
     tituloForm.put(route('titulos-tipos.update', selectedTitulo.value), {
@@ -209,6 +226,8 @@ const confirmDelete = () => {
 </script>
 
 <template>
+
+
   <header class="flex justify-end items-center p-4 w-full pr-16">
     <img
       :src="selectedLanguage === 'es' ? '/images/chile-flag.png' : '/images/us-flag.png'"
@@ -217,6 +236,7 @@ const confirmDelete = () => {
       @click="toggleLanguage"
     />
   </header>
+
 
   <Toast position="top-center" />
 
@@ -294,7 +314,7 @@ const confirmDelete = () => {
                   v-model="tituloForm.nombre" 
                   class="w-full mt-1 block"
                   :class="{'p-invalid': tituloForm.errors.nombre}"
-                  :placeholder="t('select_type')" />
+                  :placeholder="t('enter_a_title_type')" />
                 <small class="p-error block" v-if="tituloForm.errors.nombre">
                   {{ tituloForm.errors.nombre }}
                 </small>

@@ -16,10 +16,10 @@ export default {
     academic_info: 'Academic Information',
     academic_info_description: 'Description of Academic Information',
     degree_type: 'Degree Type',
-    types_of_registered_titles: 'types of registered titles',
-    add_title_type: "add title type",
-    No_title_types_have_been_recorded: 'No title types have been recorded',
-    enter_title_name: 'Enter title name',
+    types_of_registered_titles: 'Types Of Registered Titles',
+    add_title_type: "Add Title Type",
+    No_title_types_have_been_recorded: 'No Title Types Have Been Recorded',
+    enter_a_title_type: 'Enter A Title Type',
     cancel: 'Cancel',
     save: 'Save',
 
@@ -29,7 +29,10 @@ export default {
     academic_info: 'Academic Information',
     confirm_delete: "Confirm Delete",
     delete_confirmation_message: "Are you sure you want to delete this title?",
-    confirm: 'confirm'
+    confirm: 'confirm',
+    Mistake: 'Mistake',
+    field_required: 'Field Required',
+    invalid_format: 'Invalid Format'
     
     
 };

@@ -12,7 +12,12 @@ class TituloTipoController extends Controller
     protected function rules()
     {
         return [
-            'nombre' => 'required|string|max:150',
+            'nombre' => [
+                'required', 
+                'string', 
+                'max:150', 
+               'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'
+            ],
         ];
     }
 

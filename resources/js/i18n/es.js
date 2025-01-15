@@ -22,7 +22,7 @@ export default {
     update_success: "¡Actualización exitosa!",
     deleted: "Eliminado",  // Asegúrate de que esta clave esté presente
     delete_success: "¡Eliminación exitosa!",
-    enter_title_name: 'Ingrese el nombre del título',
+    enter_a_title_type: 'Ingrese el tipo de título',
     cancel: 'Cancelar',
     save: 'Guardado',
 
@@ -32,7 +32,10 @@ export default {
     academic_info: 'Información Académica',
 
     confirm_delete: "Confirmar eliminación",
-    delete_confirmation_message: "Are you sure you want to delete this type of title?",
-    confirm: 'Confirmar'
+    delete_confirmation_message: "¿Está seguro que quiere eliminar este Tipo de Título?",
+    confirm: 'Confirmar',
+    Mistake: 'Error',
+    field_required: 'Campo requerido',
+    invalid_format: 'Formato inválido, ingrese solo letras.'
     
 };
